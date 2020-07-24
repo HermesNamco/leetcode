@@ -1,0 +1,36 @@
+class LRUCache {
+public:
+    LRUCache(int capacity): cache(list<pair<int, int>>(capacity, pair<int, int>(0,0))) {
+    }
+
+    int get(int key) {
+        auto it = data_pos.find(key);
+        if(it != data_pos.end()){
+            int value = it->second->second;
+            cache.push_front(make_pair(key, value));
+            cache.erase(it->second);
+            it -> second = cache.begin();
+            return value;
+        }else
+            return -1;
+    }
+
+    void put(int key, int value) {
+        auto it = data_pos.find(key);
+        if(it != data_pos.end()){
+            cache.erase(it->second);
+            cache.push_front(make_pair(key, value));
+            it -> second = cache.begin();
+        }else{
+            cache.push_front(make_pair(key, value));
+            data_pos.insert(make_pair(key, cache.begin()));
+            data_pos.erase(cache.back().first);
+            cache.pop_back();
+        }
+        return;
+    }
+
+private:
+    list<pair<int,int>> cache;
+    unordered_map<int, list<pair<int,int>>::iterator> data_pos;		//如果不用哈希存储会超时
+};
