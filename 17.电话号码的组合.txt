@@ -1,0 +1,39 @@
+class Solution {
+public:
+    unordered_map<int, vector<char>> dict;
+    vector<string> letterCombinations(string digits) {
+        dict.insert(make_pair(2,vector<char>{'a','b','c'}));
+        dict.insert(make_pair(3,vector<char>{'d','e','f'}));
+        dict.insert(make_pair(4,vector<char>{'g','h','i'}));
+        dict.insert(make_pair(5,vector<char>{'j','k','l'}));
+        dict.insert(make_pair(6,vector<char>{'m','n','o'}));
+        dict.insert(make_pair(7,vector<char>{'p','q','r','s'}));
+        dict.insert(make_pair(8,vector<char>{'t','u','v'}));
+        dict.insert(make_pair(9,vector<char>{'w','x','y','z'}));
+
+        vector<string> result;
+        
+        if(digits.size() == 0)
+            return result;
+
+        findAllRoute(digits, 0, "", result);
+
+
+        return result;
+
+    }
+
+    void findAllRoute(string digits,int pos,string s, vector<string>& result){
+
+        if(pos == digits.size()){
+            result.push_back(s);
+            return;
+        }
+
+        vector<char>& num_to_char = dict[(digits[pos] - '0')];
+        for(int i = 0;i < num_to_char.size();++ i){
+            findAllRoute(digits, pos + 1, s + num_to_char[i], result);
+        }
+        return;
+    }
+};
