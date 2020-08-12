@@ -4,7 +4,7 @@ public:
         if(head == NULL)
             return true;
         vector<ListNode*> temp;
-        while(head != NULL){		//Á´±í²»·½±ãÈÎÒâÎ»ÖÃ·ÃÎÊ£¬°ÑËü×ª»»³ÉÊý×é¸ü¸ßÐ§£¬Á´±í±ãÓÚ½øÐÐÔö¼ÓºÍÉ¾³ý²Ù×÷
+        while(head != NULL){		//é“¾è¡¨ä¸æ–¹ä¾¿ä»»æ„ä½ç½®è®¿é—®ï¼ŒæŠŠå®ƒè½¬æ¢æˆæ•°ç»„æ›´é«˜æ•ˆï¼Œé“¾è¡¨ä¾¿äºŽè¿›è¡Œå¢žåŠ å’Œåˆ é™¤æ“ä½œ
             temp.push_back(head);
             head = head->next;
         }
@@ -15,6 +15,71 @@ public:
                 return false;
             ++ pos;
             -- rpos;
+        }
+        return true;
+    }
+};
+
+//æ—¶é—´å¤æ‚åº¦O(n)ï¼Œç©ºé—´å¤æ‚åº¦O(1)è§£æ³•
+//å°†é“¾è¡¨å‰åŠæ®µåè½¬
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        
+        int count = 0;
+        ListNode* pos = head;
+        while(pos != nullptr){
+            pos = pos -> next;
+            ++ count;
+        }
+
+        if(count <= 1)
+            return true;
+        
+        int middle_left = 0;
+        int middle_right = 0;
+
+        if(count & 1){
+            middle_left = count / 2 - 1;
+            middle_right = count / 2 + 1;        
+        }else{
+            middle_left = count / 2 - 1;
+            middle_right = count / 2;
+        }
+
+        pos = head;
+        int now = 0;
+        ListNode* last_node = nullptr;
+        ListNode* left_head = nullptr;
+        ListNode* right_head = nullptr;
+        //åè½¬é“¾è¡¨å‰åŠæ®µï¼Œleft_headä¸ºå·¦åŠæ®µå¤´èŠ‚ç‚¹ï¼Œright_headä¸ºå³åŠæ®µå¤´èŠ‚ç‚¹
+        while(pos){
+            if(now <= middle_left){
+                if(now == middle_left){
+                    left_head = pos;
+                }
+                ListNode* next = pos -> next;
+                pos -> next = last_node;
+                last_node = pos;
+                pos = next;
+                ++ now;
+            }else if(now == middle_right){
+                right_head = pos;
+                break;
+            }else{
+                pos = pos -> next;
+                ++ now;
+            }
+        }
+
+        while(left_head != nullptr && right_head != nullptr){
+
+            if(left_head -> val != right_head -> val)
+                return false;
+            
+            left_head = left_head -> next;
+            right_head = right_head -> next;
+
         }
         return true;
     }
