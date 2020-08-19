@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+
+        if(!root)
+            return 0;
+        int result = 0;
+        depthOfTree(root, result);
+        return result;
+
+    }
+
+    int depthOfTree(TreeNode* root,int& result){		//双返回值，return数的深度，result记录树的直径
+
+        if(!root)
+            return 0;
+
+        int left_tree_depth = depthOfTree(root -> left, result);
+        int right_tree_depth = depthOfTree(root -> right, result);
+        if(result < left_tree_depth + right_tree_depth)
+            result = left_tree_depth + right_tree_depth;
+
+        return max(left_tree_depth, right_tree_depth) + 1;
+
+    }
+};
